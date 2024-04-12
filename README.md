@@ -1,3 +1,17 @@
+# Munus
+
+
+## Deployment
+Deploy the munus contract with 
+
+```
+forge script script/DeployEnzymeInvestModule.s.sol --rpc-url optimism --broadcast -vvv --private-key <<PRIVATE_KEY>> --verify etherscan
+```
+
+
+
+
+
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
