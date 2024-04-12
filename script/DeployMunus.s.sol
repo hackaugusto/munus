@@ -5,7 +5,7 @@ import {Script, console} from "forge-std/Script.sol";
 import "../src/Munus.sol";
 
 contract CounterScript is Script {
-    Munus munus;
+    Munus public munus;
 
     function setUp() public {}
 
