@@ -1,5 +1,7 @@
 This is the repo containing the smart contracts for Munus. The repo containing the Munus front end can be found here: https://github.com/fredo/munus-ui
 
+We've used Foundry for the project. Tests are available in /tests
+
 # MUNUS: _Anonymous Donations_, by JAUF
 
 Munus allows anonymous donations to charities. It utilizes [Firn](https://firn.cash) to decouple the address of the donator from the transaction to the charity. The donator can at any point in time reveal the secret used to hash the transaction data in order to prove that they did indeed perform the donation. This can be useful for tax returns or other situations where it might be necessary to prove that a donation was done.
