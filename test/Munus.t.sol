@@ -12,31 +12,53 @@ contract MunusTest is Test {
     }
 
     function test_trampoline() public {
-        bytes32 hash = "0";
-        address payable alice = payable(address(0x01));
-        munus.trampoline(hash, alice);
-    }
-
-    function test_transfer() public {
         address payable alice = payable(address(0x01));
 
         assertEq(alice.balance, 0);
 
         bytes32 hash1 = "1";
-        munus.trampoline{value:3}(hash1, alice);
-        assertEq(alice.balance, 3);
+        vm.expectEmit(address(munus));
+        emit Munus.DonationReceived(alice, hash1, 1e15);
+        munus.trampoline{value:1e15}(hash1, alice);
+        assertEq(alice.balance, 1e15);
 
         bytes32 hash2 = "2";
-        munus.trampoline{value:7}(hash2, alice);
-        assertEq(alice.balance, 10);
+        vm.expectEmit(address(munus));
+        emit Munus.DonationReceived(alice, hash2, 1e16);
+        munus.trampoline{value:1e16}(hash2, alice);
+        assertEq(alice.balance, 1e15 + 1e16);
+
+        bytes32 hash3 = "3";
+        vm.expectEmit(address(munus));
+        emit Munus.DonationReceived(alice, hash3, 1e17);
+        munus.trampoline{value:1e17}(hash3, alice);
+        assertEq(alice.balance, 1e15 + 1e16 + 1e17);
     }
 
-    function test_trampolineTwiceFails() public {
-        bytes32 hash = "3";
+    function test_trampolineInvalidValueFails() public {
         address payable alice = payable(address(0x01));
-        munus.trampoline{value:3}(hash, alice);
 
-        vm.expectRevert(Munus.SecretAlreadyUsed.selector);
-        munus.trampoline{value:7}(hash, alice);
+        // 1 milli eth is the minimum
+        bytes32 hash5 = "5";
+        vm.expectRevert(Munus.InvalidAmount.selector);
+        munus.trampoline{value:1e14}(hash5, alice);
+
+        // Make sure values below/above the target are not accepted
+        bytes32 hash6 = "6";
+        vm.expectRevert(Munus.InvalidAmount.selector);
+        munus.trampoline{value:1e15 - 1}(hash6, alice);
+
+        bytes32 hash7 = "7";
+        vm.expectRevert(Munus.InvalidAmount.selector);
+        munus.trampoline{value:1e15 + 1}(hash7, alice);
+    }
+
+    function test_trampolineSameHashTwiceFails() public {
+        bytes32 hash8 = "8";
+        address payable alice = payable(address(0x01));
+        munus.trampoline{value:1e15}(hash8, alice);
+
+        vm.expectRevert(Munus.HashAlreadyUsed.selector);
+        munus.trampoline{value:1e15}(hash8, alice);
     }
 }
