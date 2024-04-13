@@ -20,4 +20,4 @@ Munus allows anonymous donations to charities. It utilizes [Firn](https://firn.c
 - Automatic donation receipt generator
 - Arbritrary wallet supprt (dependent on wallets supporting MM Snaps)
 
-<img src="(https://github.com/fredo/munus-ui/blob/main/src/assets/munus.png)" width="200" />
+<img src="https://github.com/fredo/munus-ui/blob/main/src/assets/munus.png" width="200" />
