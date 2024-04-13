@@ -1,80 +1,23 @@
-# Munus
+This is the repo containing the smart contracts for Munus. The repo containing the Munus front end can be found here: https://github.com/fredo/munus-ui
 
+# MUNUS: _Anonymous Donations_, by JAUF
 
-## Deployment
-Deploy the munus contract with 
+Munus allows anonymous donations to charities. It utilizes [Firn](https://firn.cash) to decouple the address of the donator from the transaction to the charity. The donator can at any point in time reveal the secret used to hash the transaction data in order to prove that they did indeed perform the donation. This can be useful for tax returns or other situations where it might be necessary to prove that a donation was done.
 
-```
-forge script script/DeployEnzymeInvestModule.s.sol --rpc-url optimism --broadcast -vvv --private-key <<PRIVATE_KEY>> --verify etherscan
-```
+### How it works
 
+- Prerequisite: User has funds on Firn (currently only Base supported)
+- User connects to Munus website with Metamask using the Firn MetaMask Snap
+- User selects address of charity and donation amount and hashes it with a secret
+- Firn Snap creates proof for transaction and calls the Munus smart contract
+- Munus smart contract registers the hash of the tx and forwards the funds to the charity
+- User can at any point in time show that he did the transaction buy revealing the secret (currently a "one of" event)
 
+### Future improvement
 
+- Charity registration / KYC to assure charities receive money
+- zkp for the donation proof in order to choose who to reveal to
+- Automatic donation receipt generator
+- Arbritrary wallet supprt (dependent on wallets supporting MM Snaps)
 
-
-## Foundry
-
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+<img src="![src/assets/munus.png](https://github.com/fredo/munus-ui/blob/main/src/assets/munus.png)" width="200" />
